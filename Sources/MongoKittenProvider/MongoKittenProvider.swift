@@ -17,7 +17,7 @@ public final class Provider: Vapor.Provider {
     
     /// Called after the Droplet has initialized.
     public func boot(_ droplet: Droplet) throws {
-        droplet.database = self.database
+        droplet.mongodb = self.database
     }
     
     /// Called before the Droplet begins serving
@@ -47,7 +47,7 @@ extension Database: ConfigInitializable {
 }
 
 extension Droplet {
-    public internal(set) var database: Database? {
+    public internal(set) var mongodb: Database? {
         get {
             return self.storage["mongokitten-provider-database"] as? Database
         }
@@ -56,11 +56,11 @@ extension Droplet {
         }
     }
     
-    public func assertDatabase() throws -> Database {
-        guard let database = self.database else {
+    public func assertMongoDB() throws -> Database {
+        guard let mongodb = self.mongodb else {
             throw MongoError.notConnected
         }
         
-        return database
+        return mongodb
     }
 }
