@@ -13,7 +13,17 @@ public final class Provider: Vapor.Provider {
     
     /// Called after the provider has initialized
     /// in the `Config.addProvider` call.
-    public func boot(_ config: Config) throws {}
+    public func boot(_ config: Config) throws {
+        config.addConfigurable(cache: { config -> MongoCache in
+            let cache = try config.mongoConfig(for: "cache")
+            return try MongoCache(in: self.database[cache])
+        }, name: "mongo")
+        
+        config.addConfigurable(sessions: { config -> MongoSessions in
+            let sessions = try config.mongoConfig(for: "sessions")
+            return MongoSessions(in: self.database[sessions])
+        }, name: "mongo")
+    }
     
     /// Called after the Droplet has initialized.
     public func boot(_ droplet: Droplet) throws {
@@ -25,24 +35,29 @@ public final class Provider: Vapor.Provider {
     public func beforeRun(_ droplet: Droplet) throws { }
 }
 
-
-extension Database: ConfigInitializable {
-    public convenience init(config: Config) throws {
-        guard let mongo = config["mongo"] else {
+extension Config {
+    fileprivate func mongoConfig(for key: String) throws -> String {
+        guard let mongo = self["mongo"] else {
             throw ConfigError.missingFile("mongo")
         }
         
-        guard let url = mongo["url"]?.string else {
+        guard let value = mongo[key]?.string else {
             throw ConfigError.missing(
-                key: ["url"],
+                key: [key],
                 file: "mongo",
                 desiredType: String.self
             )
         }
         
-        let maxConnectionsPerServer = mongo["maxConnectionsPerServer"]?.int ?? 100
+        return value
+    }
+}
+
+extension Database: ConfigInitializable {
+    public convenience init(config: Config) throws {
+        let url = try config.mongoConfig(for: "url")
         
-        try self.init(url, maxConnectionsPerServer: maxConnectionsPerServer)
+        try self.init(url)
     }
 }
 

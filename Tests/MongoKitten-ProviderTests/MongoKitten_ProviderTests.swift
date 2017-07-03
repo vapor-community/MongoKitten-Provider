@@ -17,3 +17,4 @@ class MongoKittenProviderTests: XCTestCase {
         ("testExample", testExample),
     ]
 }
+

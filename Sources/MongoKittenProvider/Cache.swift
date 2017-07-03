@@ -2,7 +2,7 @@ import MongoKitten
 import Cache
 import Vapor
 
-public final class MeowCache : CacheProtocol {
+public final class MongoCache : CacheProtocol {
     public func set(_ key: String, _ value: Node, expiration: Date?) throws {
         try collection.update("_id" == key, to: [
             "_id": key,
