@@ -2,8 +2,6 @@
 
 ![OpenKitten](http://openkitten.org/background-openkitten.svg)
 
-Integrations
-
 ## Requirements
 
 - A MongoDB server (local or online) running MongoDB 2.6 or above. (MongoDB 3.2 or 3.4 is recommmended)
