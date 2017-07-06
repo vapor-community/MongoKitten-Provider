@@ -1,7 +1,7 @@
 # MongoKitten-Provider
 
 ![Swift](http://img.shields.io/badge/swift-3.0-brightgreen.svg)
-[![CircleCI](https://circleci.com/gh/vapor-community/mongokitten-provider.svg?style=shield)](https://circleci.com/gh/vapor-community/mongokitten-provider)
+[![CircleCI](https://circleci.com/gh/vapor-community/MongoKitten-Provider.svg?style=shield)](https://circleci.com/gh/vapor-community/MongoKitten-Provider)
 
 ![OpenKitten](http://openkitten.org/background-openkitten.svg)
 
