@@ -18,6 +18,7 @@ extension ObjectId {
 }
 
 extension Value {
+    /// Converts OpenKitten/Cheetah JSON to Vapor/JSON
     public func makeJSON() throws -> JSON {
         switch self {
         case let string as String:

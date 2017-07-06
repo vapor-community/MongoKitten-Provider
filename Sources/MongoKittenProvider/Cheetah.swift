@@ -10,6 +10,7 @@ enum CheetahJSONError : Error {
 }
 
 extension JSONObject : JSONConvertible {
+    /// Creates a new Cheetah JSONObject from Vapor/JSON
     public init(json: JSON) throws {
         guard let object = try json.wrapped.makeCheetahValue() as? JSONObject else {
             throw CheetahJSONError.notAnObject
@@ -20,6 +21,7 @@ extension JSONObject : JSONConvertible {
 }
 
 extension JSONArray : JSONConvertible {
+    /// Creates a new Cheetah JSONArray from Vapor/JSON
     public init(json: JSON) throws {
         guard let object = try json.wrapped.makeCheetahValue() as? JSONArray else {
             throw CheetahJSONError.notAnObject
@@ -30,6 +32,7 @@ extension JSONArray : JSONConvertible {
 }
 
 extension StructuredData {
+    /// Converts Vapor's StructuredData to Cheetah.Value
     public func makeCheetahValue() throws -> Cheetah.Value {
         switch self {
         case .null:

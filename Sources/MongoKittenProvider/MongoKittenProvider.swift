@@ -2,11 +2,14 @@ import Vapor
 @_exported import MongoKitten
 @_exported import BSON
 
+/// Configures MongoKitten and MongoDB from Vapor config files
 public final class Provider: Vapor.Provider {
     public static let repositoryName: String = "mongokitten-provider"
     
+    /// The initialized MongoDB
     public let database: Database
     
+    /// Opens a new MongoDB database connection
     public init(config: Config) throws {
         self.database = try Database(config: config)
     }
@@ -54,6 +57,7 @@ extension Config {
 }
 
 extension Database: ConfigInitializable {
+    /// Creates a new Database object from Vapor.Config
     public convenience init(config: Config) throws {
         let url = try config.mongoConfig(for: "url")
         
@@ -62,6 +66,7 @@ extension Database: ConfigInitializable {
 }
 
 extension Droplet {
+    /// Extracts a MongoKitten Database from Droplet, returns `nil` if it's not there
     public internal(set) var mongodb: Database? {
         get {
             return self.storage["mongokitten-provider-database"] as? Database
@@ -70,7 +75,7 @@ extension Droplet {
             self.storage["mongokitten-provider-database"] = newValue
         }
     }
-    
+    /// Extracts a MongoKitten Database from Droplet, throws if it's not there
     public func assertMongoDB() throws -> Database {
         guard let mongodb = self.mongodb else {
             throw MongoError.notConnected

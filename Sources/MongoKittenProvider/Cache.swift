@@ -2,7 +2,9 @@ import MongoKitten
 import Cache
 import Vapor
 
+/// Caches information in MongoDb
 public final class MongoCache : CacheProtocol {
+    /// Sets/Updates a value with an expiration date
     public func set(_ key: String, _ value: Node, expiration: Date?) throws {
         try collection.update("_id" == key, to: [
             "_id": key,
@@ -26,6 +28,7 @@ public final class MongoCache : CacheProtocol {
         try self.init(in: database["_sessions"])
     }
     
+    /// Fetches a value from the database
     public func get(_ key: String) throws -> Node? {
         guard let value = try collection.findOne("_id" == key)?["value"] else {
             return nil
@@ -34,6 +37,7 @@ public final class MongoCache : CacheProtocol {
         return value.makeNode()
     }
     
+    /// Sets/Updates a value
     public func set(_ key: String, _ value: Node) throws {
         try collection.update("_id" == key, to: [
             "_id": key,
@@ -41,6 +45,7 @@ public final class MongoCache : CacheProtocol {
             ], upserting: true)
     }
     
+    /// Removes a cached value
     public func delete(_ key: String) throws {
         try collection.remove("_id" == key)
     }
