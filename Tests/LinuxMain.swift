@@ -1,6 +1,6 @@
 import XCTest
-@testable import MongoKitten_ProviderTests
+@testable import MongoKittenProviderTests
 
 XCTMain([
-    testCase(MongoKitten_ProviderTests.allTests),
+    testCase(MongoKittenProviderTests.allTests),
 ])
