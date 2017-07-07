@@ -10,7 +10,9 @@ class MongoKittenProviderTests: XCTestCase {
         
         let drop = try Droplet(config)
         
-        XCTAssertEqual(try drop.assertMongoDB().name, "example-database")
+        let db = try drop.assertMongoDB()
+        
+        XCTAssertEqual(db.name, "example-database")
     }
     
     static var allTests: [(String, (MongoKittenProviderTests) -> () throws -> Void)] = [

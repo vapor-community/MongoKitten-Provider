@@ -4,28 +4,19 @@ import Vapor
 
 /// Configures MongoKitten and MongoDB from Vapor config files
 public final class Provider: Vapor.Provider {
-    public static let repositoryName: String = "mongokitten-provider"
-    
-    /// The initialized MongoDB
-    public let database: Database
-    
-    /// Opens a new MongoDB database connection
     public init(config: Config) throws {
         self.database = try Database(config: config)
     }
     
+    public static let repositoryName: String = "mongokitten-provider"
+    
+    /// The initialized MongoDB
+    private var database: Database?
+    
     /// Called after the provider has initialized
     /// in the `Config.addProvider` call.
     public func boot(_ config: Config) throws {
-        config.addConfigurable(cache: { config -> MongoCache in
-            let cache = try config.mongoConfig(for: "cache")
-            return try MongoCache(in: self.database[cache])
-        }, name: "mongo")
-        
-        config.addConfigurable(sessions: { config -> MongoSessions in
-            let sessions = try config.mongoConfig(for: "sessions")
-            return MongoSessions(in: self.database[sessions])
-        }, name: "mongo")
+        self.database = try Database(config: config)
     }
     
     /// Called after the Droplet has initialized.
